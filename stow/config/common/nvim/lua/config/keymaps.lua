@@ -2,7 +2,10 @@ local map = vim.keymap.set
 
 map("n", "<Esc>", "<cmd>nohlsearch<cr>")
 map("n", "<leader>w", "<cmd>write<cr>", { desc = "Write" })
-map("n", "<leader>q", "<cmd>quit<cr>", { desc = "Quit" })
+map("n", "<leader>q", "<cmd>wq<cr>", { desc = "Save & Quit" })
+map("n", "<leader>Q", "<cmd>q<cr>", { desc = "Quit" })
+map("v", "<C-c>", '"+y', { desc = "Copy to clipboard" })
+map("n", "i", "zzi", { desc = "Center line and insert" })
 
 -- window navigation
 map("n", "<C-h>", "<C-w>h")

@@ -10,7 +10,7 @@ return {
       format_on_save = { timeout_ms = 1000, lsp_format = "fallback" },
     },
     keys = {
-      { "<leader>f", function() require("conform").format({ async = true, lsp_format = "fallback" }) end, desc = "Format" },
+      { "<leader>F", function() require("conform").format({ async = true, lsp_format = "fallback" }) end, desc = "Format" },
     },
   },
 }

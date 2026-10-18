@@ -27,7 +27,7 @@ o.timeoutlen = 400
 o.clipboard = "unnamedplus"
 o.mouse = "a"
 o.completeopt = { "menu", "menuone", "noselect" }
-o.showmode = true -- shown by statusline
+o.showmode = false 
 
 vim.diagnostic.config({
   virtual_text = { spacing = 2, prefix = "●" },

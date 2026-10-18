@@ -3,6 +3,10 @@ opacity = 0.85
 decorations = "none"
 option_as_alt = "OnlyLeft"
 
+[window.padding]
+x = 10
+y = 10
+
 [[hints.enabled]]
 command = "/home/artu/.local/bin/xdg-open"
 hyperlinks = true
