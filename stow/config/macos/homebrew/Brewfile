@@ -1,9 +1,16 @@
 tap "dbt-labs/dbt", trusted: { formulae: ["dbt-core"] }
 tap "dimentium/autoraise"
+tap "hashicorp/tap"
 tap "int128/kubelogin"
 tap "jstkdng/programs"
+# Command-line interface for SQLite
+brew "sqlite"
+# Official Amazon AWS command-line interface
+brew "awscli"
 # Clone of cat(1) with syntax highlighting and Git integration
 brew "bat"
+# Cross-platform make
+brew "cmake"
 # GNU File, Shell, and Text utilities
 brew "coreutils"
 # More intuitive version of du in rust
@@ -20,24 +27,32 @@ brew "gh"
 brew "htop"
 # Lightweight and flexible command-line JSON processor
 brew "jq"
+# Kubernetes CLI To Manage Your Clusters In Style!
+brew "k9s"
+# Tool that can switch between kubectl contexts easily and create aliases
+brew "kubectx"
 # Kubernetes command-line interface
 brew "kubernetes-cli"
-# Command-line interface for SQLite
-brew "sqlite"
 # Pager program similar to more
 brew "less"
 # Terminal file manager
 brew "lf"
 # Implementation of the file(1) command
 brew "libmagic"
+# LLVM's OpenMP runtime library
+brew "libomp"
 # Ambitious Vim-fork focused on extensibility and agility
 brew "neovim"
+# Open-source, cross-platform JavaScript runtime environment
+brew "node"
+# Search tool like grep and The Silver Searcher
+brew "ripgrep"
+# AI coding agent, built for the terminal
+brew "opencode"
 # OpenBSD freely-licensed SSH connectivity tools
 brew "openssh"
 # Python package management tool
 brew "poetry"
-# Search tool like grep and The Silver Searcher
-brew "ripgrep"
 # Utility that provides fast incremental file transfer
 brew "rsync"
 # CLI for snowflake
@@ -76,12 +91,16 @@ brew "zsh-syntax-highlighting"
 brew "dbt-labs/dbt/dbt", trusted: true
 # Focus-follows-mouse for MacOS
 brew "dimentium/autoraise/autoraise", trusted: true
+# Vault
+brew "hashicorp/tap/vault", trusted: true
 # A kubectl plugin for Kubernetes OpenID Connect authentication
 brew "int128/kubelogin/kubelogin", trusted: true
 # Terminal-based AI coding assistant
 cask "claude-code"
 # OpenAI's coding agent that runs in your terminal
 cask "codex"
+# App to build and share containerised applications and microservices
+cask "docker-desktop"
 # Web browser
 cask "firefox"
 cask "font-jetbrains-mono-nerd-font"
@@ -93,9 +112,14 @@ cask "raycast"
 cask "scroll-reverser"
 # Team communication and collaboration software
 cask "slack"
+# Video communication and virtual meeting platform
+cask "zoom"
 uv "basedpyright"
 uv "black"
 uv "isort"
+uv "markitdown"
 uv "openlineage-dbt"
 uv "pyright"
 uv "ruff"
+npm "@agentclientprotocol/claude-agent-acp"
+npm "@agentclientprotocol/codex-acp"
