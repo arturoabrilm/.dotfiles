@@ -38,3 +38,5 @@ unset shell_file
 
 [[ -r "$XDG_CONFIG_HOME/shell/prompt.bash" ]] &&
     source "$XDG_CONFIG_HOME/shell/prompt.bash"
+
+PS1="sandbox $ "

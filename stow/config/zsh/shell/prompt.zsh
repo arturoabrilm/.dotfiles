@@ -4,17 +4,18 @@ setopt PROMPT_SUBST
 
 zstyle ':vcs_info:*' enable git
 zstyle ':vcs_info:*' check-for-changes true
-zstyle ':vcs_info:*' unstagedstr '%{%F{214}%} ✗%{%f%}'
-zstyle ':vcs_info:*' stagedstr   '%{%F{142}%} ✓%{%f%}'
+zstyle ':vcs_info:*' unstagedstr '%{%F{3}%} ✗%{%f%}'
+zstyle ':vcs_info:*' stagedstr   '%{%F{2}%} ✓%{%f%}'
 
-zstyle ':vcs_info:git:*' formats       ' %{%F{245}%}on%{%f%} %{%F{142}%}󰊢 %b%{%f%}%c%u'
-zstyle ':vcs_info:git:*' actionformats ' %{%F{245}%}on%{%f%} %{%F{142}%}󰊢 %b%{%f%}%c%u %{%F{214}%}(%a)%{%f%}'
+zstyle ':vcs_info:git:*' formats       ' %{%F{8}%}on%{%f%} %{%F{2}%}󰊢 %b%{%f%}%c%u'
+zstyle ':vcs_info:git:*' actionformats ' %{%F{8}%}on%{%f%} %{%F{2}%}󰊢 %b%{%f%}%c%u %{%F{3}%}(%a)%{%f%}'
 
 add-zsh-hook precmd vcs_info
 
-PROMPT='%{%F{245}%}╭─%{%f%} %{%F{109}%} %m%{%f%} %{%F{215}%}%~%{%f%}${vcs_info_msg_0_}
-%{%F{245}%}╰─%{%f%}%(?.%{%F{215}%}.%{%F{196}%})❯%{%f%} '
+# ANSI palette: gray framing, cyan host, yellow path, green Git branch.
+PROMPT='%{%F{8}%}╭─%{%f%} %{%F{6}%} %m%{%f%} %{%F{3}%}%~%{%f%}${vcs_info_msg_0_}
+%{%F{8}%}╰─%{%f%}%(?.%{%F{3}%}.%{%F{1}%})❯%{%f%} '
 
 # Show the active conda/venv environment instead of the hostname:
-# PROMPT='%{%F{245}%}╭─%{%f%} %{%F{109}%}(${CONDA_DEFAULT_ENV:-${VIRTUAL_ENV_PROMPT:-base}})%{%f%} %{%F{215}%}%~%{%f%}${vcs_info_msg_0_}
-# %{%F{245}%}╰─%{%f%}%(?.%{%F{215}%}.%{%F{196}%})❯%{%f%} '
+# PROMPT='%{%F{8}%}╭─%{%f%} %{%F{6}%}(${CONDA_DEFAULT_ENV:-${VIRTUAL_ENV_PROMPT:-base}})%{%f%} %{%F{3}%}%~%{%f%}${vcs_info_msg_0_}
+# %{%F{8}%}╰─%{%f%}%(?.%{%F{3}%}.%{%F{1}%})❯%{%f%} '

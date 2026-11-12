@@ -1,0 +1,110 @@
+# Share Alacritty's palette with Neovim and the shell prompt.
+# ANSI references stay palette-native; no RGB or fixed 256-color values.
+colors:
+  red: "ansi:red"
+  green: "ansi:green"
+  yellow: "ansi:yellow"
+  blue: "ansi:blue"
+  magenta: "ansi:magenta"
+  cyan: "ansi:cyan"
+  gray: "ansi:bright_black"
+
+core:
+  normal_text: {}
+  regular_file: {}
+  reset_to_normal: {}
+  directory:
+    foreground: blue
+  sticky:
+    foreground: blue
+    font-style: bold
+  other_writable:
+    foreground: blue
+    font-style: underline
+  sticky_other_writable:
+    foreground: blue
+    font-style: [bold, underline]
+  executable_file:
+    foreground: green
+    font-style: bold
+  setuid:
+    foreground: red
+    font-style: [bold, underline]
+  setgid:
+    foreground: yellow
+    font-style: [bold, underline]
+  file_with_capability:
+    foreground: red
+    font-style: underline
+  symlink:
+    foreground: cyan
+    font-style: italic
+  broken_symlink:
+    foreground: red
+    font-style: italic
+  missing_symlink_target:
+    foreground: red
+    font-style: bold
+  multi_hard_link: {}
+  fifo:
+    foreground: magenta
+  socket:
+    foreground: magenta
+    font-style: bold
+  door:
+    foreground: magenta
+    font-style: bold
+  block_device:
+    foreground: yellow
+    font-style: [bold, underline]
+  character_device:
+    foreground: yellow
+    font-style: bold
+
+text:
+  special:
+    foreground: cyan
+    font-style: bold
+  todo:
+    foreground: yellow
+    font-style: bold
+  licenses:
+    foreground: cyan
+  configuration:
+    foreground: yellow
+  other:
+    foreground: cyan
+
+markup:
+  foreground: cyan
+
+programming:
+  source:
+    font-style: regular
+  tooling:
+    foreground: yellow
+
+media:
+  foreground: magenta
+  video:
+    font-style: bold
+  audio:
+    foreground: cyan
+
+office:
+  foreground: cyan
+
+archives:
+  foreground: yellow
+  images:
+    font-style: bold
+
+executable:
+  # Libraries retain the normal foreground; Windows programs are green.
+  font-style: regular
+  windows:
+    foreground: green
+    font-style: bold
+
+unimportant:
+  foreground: gray
