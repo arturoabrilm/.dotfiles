@@ -2,7 +2,8 @@ tap "dbt-labs/dbt", trusted: { formulae: ["dbt-core"] }
 tap "dimentium/autoraise"
 tap "hashicorp/tap"
 tap "int128/kubelogin"
-tap "jstkdng/programs"
+# Get stuff done with container-native workflows for Kubernetes
+brew "argo"
 # Command-line interface for SQLite
 brew "sqlite"
 # Official Amazon AWS command-line interface
@@ -13,6 +14,8 @@ brew "bat"
 brew "cmake"
 # GNU File, Shell, and Text utilities
 brew "coreutils"
+# Docker Credential Helper for Amazon ECR
+brew "docker-credential-helper-ecr"
 # More intuitive version of du in rust
 brew "dust"
 # Simple, fast and user-friendly alternative to find

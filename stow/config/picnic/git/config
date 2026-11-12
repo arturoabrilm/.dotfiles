@@ -1,7 +1,16 @@
 [user]
 	email = arturo.abrilmartinez@teampicnic.com
 	name = Arturo Abril
+	signingkey = ~/.ssh/id_ed25519.pub
 [init]
 	defaultBranch = main
 [pull]
 	rebase = false
+[push]
+	autoSetupRemote = true
+[alias]
+	lg = log -5 --reverse
+[gpg]
+	format = ssh
+[commit]
+	gpgsign = false
