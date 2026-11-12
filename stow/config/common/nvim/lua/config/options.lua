@@ -4,7 +4,9 @@ o.number = true
 o.relativenumber = true
 o.signcolumn = "yes"
 o.cursorline = true
-o.termguicolors = true
+-- Use the terminal's ANSI palette, including inside tmux.
+o.termguicolors = false
+o.background = "dark"
 o.scrolloff = 8
 o.wrap = false
 

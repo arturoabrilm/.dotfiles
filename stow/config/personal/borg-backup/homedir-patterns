@@ -8,6 +8,7 @@ P sh
 ## EXCLUDE ##
 
 - home/artu/Dls/
+- home/artu/Code/picnic-
 
 # Hidden files and folders
 - **/.*

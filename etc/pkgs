@@ -37,6 +37,7 @@ libcamera-tools
 libnotify
 linux
 linux-firmware
+luarocks
 man-db
 micromamba-bin
 mpv
@@ -44,6 +45,7 @@ neovim
 newsboat
 noto-fonts-emoji
 opencode
+openconnect
 openssh
 paru
 paru-debug
@@ -55,6 +57,7 @@ playerctl
 python-pyfuse3
 ripgrep
 rsync
+slack-desktop
 slurp
 stow
 sudo
@@ -103,7 +106,6 @@ uv
 vdirsyncer
 vim
 vivid
-vscodium-bin
 wev
 wl-clipboard
 xdg-desktop-portal

@@ -65,6 +65,8 @@ input type:touchpad {
   }
 # Keyboard
 input type:keyboard {
+      repeat_delay 300
+      repeat_rate 40
       xkb_layout "eu","es"
       xkb_options caps:swapescape,grp:alt_shift_toggle
       xkb_capslock disabled
@@ -253,10 +255,10 @@ bindsym --locked XF86AudioNext exec 'playerctl -s previous'
 
 ### Status Bar:
 # Read `man 5 sway-bar` for more information about this section.
-font pango:JetBrains Mono Nerd Font 14
+font pango:JetBrains Mono Nerd Font 12
 bar {
     position top
-    font pango:JetBrains Mono Nerd Font 14
+    font pango:JetBrains Mono Nerd Font 12
     # When the status_command prints a new line to stdout, swaybar updates.
     status_command 'while ~/.config/sway/bar; do sleep 3; done'
     colors {
