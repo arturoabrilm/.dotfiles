@@ -1,0 +1,11 @@
+[user]
+	email = arturoabrilm@gmail.com
+	name = Arturo Abril
+[init]
+	defaultBranch = main
+[pull]
+	rebase = false
+[credential "https://github.com"]
+    helper = !~/.local/share/micromamba/envs/dotfiles/bin/gh auth git-credential
+[credential "https://gist.github.com"]
+    helper = !~/.local/share/micromamba/envs/dotfiles/bin/gh auth git-credential
