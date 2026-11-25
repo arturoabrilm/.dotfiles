@@ -57,6 +57,7 @@ playerctl
 python-pyfuse3
 ripgrep
 rsync
+ruff
 slack-desktop
 slurp
 stow

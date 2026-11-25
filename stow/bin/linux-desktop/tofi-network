@@ -42,15 +42,13 @@ if [[ -z $station ]]; then
 fi
 device=$(jq -r --arg s "$station" '.[$s]["net.connman.iwd.Device"].Name.data' <<< "$objects")
 
-while true; do
-    objects=$(get_objects)
+objects=$(get_objects)
 
-    # Networks in range, strongest signal first
-    order=$(busctl --json=short call "$iwd" "$station" "$iwd.Station" GetOrderedNetworks | jq -c '[.data[0][][0]]')
+# Networks in range, strongest signal first
+order=$(busctl --json=short call "$iwd" "$station" "$iwd.Station" GetOrderedNetworks | jq -c '[.data[0][][0]]')
 
-    # path, ssid, connected, known, security type; connected first, then known, then new
-    # (sort_by is stable, so signal strength order is kept within each group)
-    rows=$(jq -r --argjson order "$order" '
+# Connected first, then known, then new; preserve signal order within each group.
+rows=$(jq -r --argjson order "$order" '
         . as $o
         | [ $order[] | . as $p
             | $o[$p]["net.connman.iwd.Network"] // empty
@@ -58,56 +56,46 @@ while true; do
         | sort_by(if .c then 0 elif .k then 1 else 2 end)
         | .[] | [.p, .n, .c, .k, .t] | @tsv' <<< "$objects")
 
-    # Build the menu and remember the details behind each entry
-    declare -A net_path=() net_name=() net_conn=() net_known=() net_type=()
-    menu=("$rescan")
-    while IFS=$'\t' read -r path name conn known type; do
-        if [[ -z $path ]]; then continue; fi
-        if [[ $conn == true ]]; then
-            label="$name (c)"
-        elif [[ $known == true ]]; then
-            label="$name"
-        else
-            label="$name [$type]"
-        fi
-        menu+=("$label")
-        net_path[$label]=$path
-        net_name[$label]=$name
-        net_conn[$label]=$conn
-        net_known[$label]=$known
-        net_type[$label]=$type
-    done <<< "$rows"
-
-    # Pick an entry; exit quietly if cancelled (esc)
-    choice=$(printf '%s\n' "${menu[@]}" | tofi) || exit 0
-
-    if [[ $choice == "$rescan" ]]; then
-        scan
-        exit 0
+declare -A networks=()
+menu=("$rescan")
+while IFS= read -r row; do
+    [[ -n $row ]] || continue
+    IFS=$'\t' read -r path name conn known type <<< "$row"
+    if [[ $conn == true ]]; then
+        label="$name (c)"
+    elif [[ $known == true ]]; then
+        label="$name"
+    else
+        label="$name [$type]"
     fi
+    menu+=("$label")
+    networks[$label]=$row
+done <<< "$rows"
 
-    # Ignore anything typed that isn't in the list
-    [[ -n ${net_path[$choice]:-} ]] || exit 0
-    break
-done
+choice=$(printf '%s\n' "${menu[@]}" | tofi) || exit 0
+if [[ $choice == "$rescan" ]]; then
+    scan
+    exit 0
+fi
 
-label=${net_name[$choice]}
+[[ -n $choice && -n ${networks[$choice]:-} ]] || exit 0
+IFS=$'\t' read -r path label conn known type <<< "${networks[$choice]}"
 
 # Decide operation based on current state
-if [[ ${net_conn[$choice]} == true ]]; then
+if [[ $conn == true ]]; then
     action=disconnect
     cmd=(busctl call "$iwd" "$station" "$iwd.Station" Disconnect)
-elif [[ ${net_known[$choice]} == true || ${net_type[$choice]} == open ]]; then
+elif [[ $known == true || $type == open ]]; then
     # Known and open networks need no credentials
     action=connect
-    cmd=(busctl call "$iwd" "${net_path[$choice]}" "$iwd.Network" Connect)
-elif [[ ${net_type[$choice]} == psk ]]; then
+    cmd=(busctl call "$iwd" "$path" "$iwd.Network" Connect)
+elif [[ $type == psk ]]; then
     # New password-protected network: ask for the passphrase (hidden input, empty list)
     action=connect
     pass=$(tofi --hide-input=true --require-match=false --prompt-text "$label passphrase: " --padding-left='20%' < /dev/null) || exit 0
     cmd=(iwctl --passphrase "$pass" station "$device" connect "$label" psk)
 else
-    notify critical "network-wireless-offline-symbolic" "$label uses ${net_type[$choice]}, which needs an iwd provisioning file"
+    notify critical "network-wireless-offline-symbolic" "$label uses $type, which needs an iwd provisioning file"
     exit 1
 fi
 

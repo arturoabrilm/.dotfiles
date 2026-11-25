@@ -24,6 +24,7 @@ dependencies:
   - python
   - ripgrep
   - rsync
+  - ruff
   - tmux
   - tree
   - tree-sitter-cli

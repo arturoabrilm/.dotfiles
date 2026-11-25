@@ -1,49 +1,43 @@
 #!/bin/bash
-set -eu
+set -euo pipefail
 
-tag="bluetooth_tag"
+bluez=org.bluez
+notify=(dunstify -a bluetooth -h string:x-dunst-stack-tag:bluetooth_tag)
 
-# Get all trusted devices that are disconnected
-trusted_disconnected=$(comm -3 <(bluetoothctl devices Trusted | sort) <(bluetoothctl devices Connected | sort))
+# Use the first adapter, like bluetoothctl's default controller.
+rows=$(busctl --json=short call "$bluez" / org.freedesktop.DBus.ObjectManager GetManagedObjects |
+    jq -r '
+        .data[0] | to_entries
+        | (first(.[] | select(.value["org.bluez.Adapter1"]) | .key) // "") as $adapter
+        | [ .[] | .key as $path | .value["org.bluez.Device1"] // empty
+            | select(.Adapter.data == $adapter and (.Connected.data or .Trusted.data))
+            | {path: $path, address: .Address.data, connected: .Connected.data,
+               label: (.Alias.data // .Address.data)} ]
+        | sort_by(.address)[]
+        | [.path, .connected, .label] | @tsv')
 
-# Get only connected devices and append an connection identifier string
-connected="$(bluetoothctl devices Connected | sed 's/$/ (c)/')"
+[[ -n $rows ]] || exit 0
+declare -A devices=()
+menu=()
+while IFS= read -r row; do
+    IFS=$'\t' read -r path connected label <<< "$row"
+    entry="$((${#menu[@]} + 1)): $label"
+    [[ $connected != true ]] || entry+=" (c)"
+    menu+=("$entry")
+    devices[$entry]=$row
+done <<< "$rows"
 
-# Group all devices and prepend id string
-devices=$(printf "%s\n" "$trusted_disconnected" "$connected" | awk 'NF' | sort | awk '{print NR": "$0}')
-
-# Get the id of the device to connect/disconnect
-id=$(echo "$devices" | cut -d' ' -f1,4- | tofi | grep -oP '^\d{1,2}')
-
-# Get the full string, including the uuid
-target=$(echo "$devices" | grep -P "^$id")
-
-# Extract the uuid from the target
-uuid=$(echo "$target" | cut -d' ' -f3)
-
-# Prepare label string for notification message
-label=$(echo "$target" | cut -d' ' -f4- | sed 's/ (c)//')
-
-# Decide operation based on current state
-if [[ $target == *\(c\)* ]]; then 
+choice=$(printf '%s\n' "${menu[@]}" | tofi) || exit 0
+[[ -n $choice && -n ${devices[$choice]:-} ]] || exit 0
+IFS=$'\t' read -r path connected label <<< "${devices[$choice]}"
+if [[ $connected == true ]]; then
     action=disconnect
 else
     action=connect
 fi
 
-# Perform operation
-if bluetoothctl $action "$uuid"> /dev/null; then
-    dunstify \
-        -a "bluetooth" \
-        -i "bluetooth-active" \
-        -u normal \
-        -h string:x-dunst-stack-tag:$tag \
-        "Bluetooth" "$label <b>${action}ed</b> ✓"
+if busctl call "$bluez" "$path" "$bluez.Device1" "${action^}" > /dev/null; then
+    "${notify[@]}" -i bluetooth-active -u normal "Bluetooth" "$label <b>${action}ed</b> ✓"
 else
-    dunstify \
-        -a "bluetooth" \
-        -u critical \
-        -h string:x-dunst-stack-tag:$tag \
-        "Bluetooth" "Couldn't $action $label "
+    "${notify[@]}" -u critical "Bluetooth" "Couldn't $action $label "
 fi
-
