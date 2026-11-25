@@ -1,5 +1,17 @@
 local aug = vim.api.nvim_create_augroup("user", { clear = true })
 
+-- Use a directory passed on the command line as the initial project root.
+if vim.fn.argc() == 1 then
+  local directory = vim.fn.fnamemodify(vim.fn.argv(0), ":p")
+  if vim.fn.isdirectory(directory) == 1 then
+    vim.api.nvim_create_autocmd("VimEnter", {
+      group = aug,
+      once = true,
+      callback = function() vim.fn.chdir(directory) end,
+    })
+  end
+end
+
 vim.api.nvim_create_autocmd("TextYankPost", {
   group = aug,
   callback = function() vim.hl.on_yank() end,
