@@ -1,6 +1,6 @@
 #!/bin/bash
 
-[[ "$(hostname)" == "HOMEMACHINE" ]] || exit 0
+[[ "$(hostnamectl hostname)" == "tude" ]] || exit 0
 
 gitroot="$(git rev-parse --show-toplevel)"
 etcdir="$gitroot/etc"
