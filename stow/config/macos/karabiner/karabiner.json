@@ -2,6 +2,18 @@
     "global": { "show_in_menu_bar": false },
     "profiles": [
         {
+            "devices": [
+                {
+                    "identifiers": {
+                        "is_keyboard": true,
+                        "is_pointing_device": true,
+                        "product_id": 33354,
+                        "vendor_id": 1008
+                    },
+                    "ignore": false,
+                    "ignore_vendor_events": true
+                }
+            ],
             "name": "Default profile",
             "selected": true,
             "simple_modifications": [
